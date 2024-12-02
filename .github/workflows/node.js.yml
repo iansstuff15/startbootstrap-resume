@@ -31,13 +31,13 @@ jobs:
         path: ./node_modules
         key: node_modules
 
-    - name: Install dependencies
-      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-      run: npm install
-
     - name: List dependencies
       if: always()
       run: npm list
+
+    - name: Install dependencies
+      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+      run: npm install
 
     - name: Audit and Fix vulnerabilies
       run: npm audit fix --force
