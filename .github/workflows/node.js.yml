@@ -23,17 +23,17 @@ jobs:
       with:
         node-version: 22.11.0
         cache: 'npm'
-        
+
+    - name: List dependencies
+      if: always()
+      run: npm list
+    
     - name: Cache Modules
       id: cache-node-modules
       uses: actions/cache/restore@v4
       with:
         path: ./node_modules
         key: node_modules
-
-    - name: List dependencies
-      if: always()
-      run: npm list
 
     - name: Install dependencies
       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
