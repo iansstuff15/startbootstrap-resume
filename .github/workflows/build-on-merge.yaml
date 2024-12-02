@@ -116,7 +116,6 @@ jobs:
             - name: Build and push image
               uses: docker/build-push-action@v6.10.0
               with:
-                  context: .
                   push: true
                   tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:latest
                   cache-from: type=local, src=/tmp/.buildx-cache
