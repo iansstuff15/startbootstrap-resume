@@ -100,3 +100,27 @@ jobs:
               with:
                   path: ./node_modules
                   key: node_modules
+
+            - name: Configure AWS
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  aws-region: us-east-1
+                  role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
+                  
+            - name: ECR Login
+              id: login-ecr
+              uses: aws-actions/amazon-ecr-login@v2
+              with:
+                  provenance: false
+
+            - name: Build and push image
+              uses: docker/build-push-action@v6.10.0
+              with:
+                  context: .
+                  push: true
+                  tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:latest
+                  cache-from: type=local, src=/tmp/.buildx-cache
+                  cache-to: type=local, dest=/tmp/.buildx-cache
+                  provenance: false
+              
+                
