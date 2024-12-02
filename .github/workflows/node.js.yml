@@ -49,7 +49,7 @@ jobs:
         key: node_modules
 
   sonarscan:
-
+    needs: audit-dependecies
     runs-on: actions-runner-1
 
     steps:
