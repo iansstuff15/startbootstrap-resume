@@ -57,8 +57,8 @@ jobs:
     - name: SonarScan
       uses: sonarsource/sonarqube-scan-action@v4.1.0
       env:
-          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+          SONAR_TOKEN: ${{ env.CAIMBRIDGE_DEMO_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONARQUBE_HOST_URL }}
 
 
     - name: Save cache 
