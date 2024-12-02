@@ -68,10 +68,10 @@ jobs:
         key: node_modules
 
     - name: Run Test Cases
-      run: npm test
+      run: npm run test
   
   sonarscan:
-    needs: audit-dependencies
+    needs: run-test-cases
     runs-on: actions-runner-1
 
     steps:
