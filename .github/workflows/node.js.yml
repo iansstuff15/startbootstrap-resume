@@ -45,10 +45,10 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-region: us-east-1
-        role-to-assume: arn:aws:iam::692859925604:role/GithubActionsOIDC
+        role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
 
     - name: Get secrets
-      uses: ${{secrets.GITHUBACTIONSOIDC}}
+      uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.7
       with:
         secret-ids: |
           SONARQUBE_HOST_URL
