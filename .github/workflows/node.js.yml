@@ -23,7 +23,7 @@ jobs:
         
     - name: Cache Modules
       id: cache-node-modules
-      uses: actions/cache@v4.1.2
+      uses: actions/cache/restore@v4
       with:
         path: ./node_modules
         key: node_modules
@@ -41,8 +41,8 @@ jobs:
         npm audit fix --force
         npm audit
 
-    - name: Save cache on failure
-      if: failure()
+    - name: Save cache 
+      if: always()
       uses: actions/cache/save@v4
       with:
         path: ./node_modules
