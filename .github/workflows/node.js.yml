@@ -1,0 +1,53 @@
+# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
+
+name: Pull Request Check
+
+on: 
+  pull_request:
+    branches: ['master']
+
+
+jobs:
+  audit-dependecies:
+
+    runs-on: actions-runner-1
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Install node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.11.0
+        cache: 'npm'
+        
+    - name: Cache Modules
+      id: cache-node-modules
+      uses: actions/cache/restore@v4
+      with:
+        path: ./node_modules
+        key: node_modules
+
+    - name: Install dependencies
+      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+      run: npm install
+
+    - name: Audit dependencies
+      run: npm audit
+
+    - name: Fix vulnerabilies
+      if: failure()
+      run: |
+        npm audit fix --force
+        npm audit
+
+    - name: Save cache 
+      if: always()
+      uses: actions/cache/save@v4
+      with:
+        path: ./node_modules
+        key: node_modules
+
