@@ -27,6 +27,7 @@ jobs:
       with:
         path: ./node_modules
         key: node_modules
+        save-always: true
 
     - name: Install dependencies
       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
