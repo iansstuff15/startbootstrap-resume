@@ -23,10 +23,6 @@ jobs:
       with:
         node-version: 22.11.0
         cache: 'npm'
-
-    - name: List dependencies
-      if: always()
-      run: npm list
     
     - name: Cache Modules
       id: cache-node-modules
