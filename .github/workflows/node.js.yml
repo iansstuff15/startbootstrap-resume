@@ -48,7 +48,7 @@ jobs:
         role-to-assume: arn:aws:iam::692859925604:role/GithubActionsOIDC
 
     - name: Get secrets
-      uses: aws-actions/aws-secretsmanager-get-secrets@v2
+      uses: ${{secrets.GITHUBACTIONSOIDC}}
       with:
         secret-ids: |
           SONARQUBE_HOST_URL
