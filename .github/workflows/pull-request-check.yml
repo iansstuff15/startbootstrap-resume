@@ -66,6 +66,12 @@ jobs:
                   node-version: 22.11.0
                   cache: 'npm'
 
+            - name: Install node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11.0
+                  cache: 'npm'
+
             - name: Cache Modules
               id: cache-node-modules
               uses: actions/cache/restore@v4
