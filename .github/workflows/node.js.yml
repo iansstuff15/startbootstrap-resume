@@ -12,6 +12,7 @@ permissions:
     contents: read
 
 jobs:
+
   list-dependencies:
     runs-on: actions-runner-1
     
@@ -65,7 +66,7 @@ jobs:
         key: node_modules
 
   sonarscan:
-    needs: audit-dependecies
+    needs: audit-dependencies
     runs-on: actions-runner-1
 
     steps:
