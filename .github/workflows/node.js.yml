@@ -41,11 +41,34 @@ jobs:
     - name: Audit and Fix vulnerabilies
       run: npm audit fix --force
 
+    - name: Save cache 
+      if: always()
+      uses: actions/cache/save@v4
+      with:
+        path: ./node_modules
+        key: node_modules
+
+  sonarscan:
+
+    runs-on: actions-runner-1
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
     - name: Configure AWS 
       uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-region: us-east-1
         role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
+
+    - name: Cache Modules
+      id: cache-node-modules
+      uses: actions/cache/restore@v4
+      with:
+        path: ./node_modules
+        key: node_modules
 
     - name: Get secrets
       uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.7
@@ -59,12 +82,3 @@ jobs:
       env:
           SONAR_TOKEN: ${{ env.CAIMBRIDGE_DEMO_TOKEN }}
           SONAR_HOST_URL: ${{ env.SONARQUBE_HOST_URL }}
-
-
-    - name: Save cache 
-      if: always()
-      uses: actions/cache/save@v4
-      with:
-        path: ./node_modules
-        key: node_modules
-  
