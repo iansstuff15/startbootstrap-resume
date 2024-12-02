@@ -1,4 +1,4 @@
-erge
+name: Build on merge
 on: workflow_dispatch
 
 permissions:
