@@ -39,7 +39,7 @@ jobs:
       run: npm audit fix --force
 
     - name: Configure AWS 
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v3
       with:
         aws-region: us-east-1
         role-to-assume: arn:aws:iam::692859925604:role/GithubActionsOIDC
