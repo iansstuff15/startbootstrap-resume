@@ -1,16 +1,16 @@
-# This workflow will do a clean installation of node dependencies, cache/restore them, build the source code and run tests across different versions of node
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-nodejs
-
 name: Pull Request Check
 
 on: 
   pull_request:
     branches: ['master']
 
+permissions:
+    id-token: write
+    contents: read
 
 jobs:
-  audit-dependecies:
-
+    
+  audit-dependencies:
     runs-on: actions-runner-1
 
     steps:
@@ -35,14 +35,8 @@ jobs:
       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
       run: npm install
 
-    - name: Audit dependencies
-      run: npm audit
-
-    - name: Fix vulnerabilies
-      if: failure()
-      run: |
-        npm audit fix --force
-        npm audit
+    - name: Audit and Fix vulnerabilies
+      run: npm audit fix --force
 
     - name: Save cache 
       if: always()
@@ -51,3 +45,61 @@ jobs:
         path: ./node_modules
         key: node_modules
 
+  run-test-cases:
+    needs: audit-dependencies
+    runs-on: actions-runner-1
+    
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Configure AWS 
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-region: us-east-1
+        role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
+
+    - name: Cache Modules
+      id: cache-node-modules
+      uses: actions/cache/restore@v4
+      with:
+        path: ./node_modules
+        key: node_modules
+
+    - name: Run Test Cases
+      run: npm test
+  
+  sonarscan:
+    needs: audit-dependencies
+    runs-on: actions-runner-1
+
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    
+    - name: Configure AWS 
+      uses: aws-actions/configure-aws-credentials@v3
+      with:
+        aws-region: us-east-1
+        role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
+
+    - name: Cache Modules
+      id: cache-node-modules
+      uses: actions/cache/restore@v4
+      with:
+        path: ./node_modules
+        key: node_modules
+
+    - name: Get secrets
+      uses: aws-actions/aws-secretsmanager-get-secrets@v2.0.7
+      with:
+        secret-ids: |
+          SONARQUBE_HOST_URL
+          CAIMBRIDGE_DEMO_TOKEN
+    - name: SonarScan
+      uses: sonarsource/sonarqube-scan-action@v4.1.0
+      env:
+          SONAR_TOKEN: ${{ env.CAIMBRIDGE_DEMO_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONARQUBE_HOST_URL }}
