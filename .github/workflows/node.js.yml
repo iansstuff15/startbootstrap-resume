@@ -12,23 +12,6 @@ permissions:
     contents: read
 
 jobs:
-
-  list-dependencies:
-    runs-on: actions-runner-1
-    
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      
-      - name: Install node
-        uses: actions/setup-node@v4
-        with:
-          node-version: 22.11.0
-          cache: 'npm'
-          
-      - name: list dependency
-        run: npm list
     
   audit-dependencies:
     runs-on: actions-runner-1
