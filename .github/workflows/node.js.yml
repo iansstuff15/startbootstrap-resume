@@ -25,7 +25,10 @@ jobs:
       with:
         path: ./node_modules
         key: node_modules
-        
+
+    - name: Install dependencies
+      run: npm install
+
     - name: Audit dependencies
       run: |
         npm audit
@@ -36,5 +39,3 @@ jobs:
         npm audit fix --force
         npm audit
 
-    - name: Install dependencies
-      run: npm install
