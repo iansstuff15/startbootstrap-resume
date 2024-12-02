@@ -34,15 +34,12 @@ jobs:
     - name: Install dependencies
       if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
       run: npm install
-      
-    - name: Audit dependencies
-      run: npm audit
 
-    - name: Fix vulnerabilies
+    - name: Audit and Fix vulnerabilies
       if: failure()
       run: |
-        npm audit fix --force
         npm audit
+        npm audit fix --force
 
     - name: List dependencies
       if: always()
