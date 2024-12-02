@@ -23,13 +23,7 @@ jobs:
       with:
         node-version: 22.11.0
         cache: 'npm'
-
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
-      
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-    
+        
     - name: Cache Modules
       id: cache-node-modules
       uses: actions/cache/restore@v4
