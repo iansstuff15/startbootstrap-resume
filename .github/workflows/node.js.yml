@@ -42,7 +42,7 @@ jobs:
       uses: aws-actions/configure-aws-credentials@v4
       with:
         aws-region: us-east-1
-        role-to-assume: GithubActionsOIDC
+        role-to-assume: ${{env.GithubActionsOIDC}}
 
     - name: Get secrets
       uses: aws-actions/aws-secretsmanager-get-secrets@v2
