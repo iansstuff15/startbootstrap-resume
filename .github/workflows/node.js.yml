@@ -21,12 +21,14 @@ jobs:
         node-version: 22.11.0
         cache: 'npm'
         
-    - uses: actions/cache@v4.1.2
+    - name: cache-node-modules
+      uses: actions/cache@v4.1.2
       with:
         path: ./node_modules
         key: node_modules
 
     - name: Install dependencies
+      if: ${{ steps.cache-node-modules.cache-hit != 'true' }}
       run: npm install
       
     - name: Fix vulnerabilies
