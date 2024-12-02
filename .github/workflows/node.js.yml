@@ -38,6 +38,12 @@ jobs:
     - name: Audit and Fix vulnerabilies
       run: npm audit fix --force
 
+    - name: Configure AWS 
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-region: us-east-1
+        role-to-assume: GithubActionsOIDC
+
     - name: Get secrets
       uses: aws-actions/aws-secretsmanager-get-secrets@v2
       with:
