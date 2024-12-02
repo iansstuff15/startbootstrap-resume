@@ -29,9 +29,12 @@ jobs:
         key: node_modules
 
     - name: Install dependencies
-      if: ${{ steps.cache-node-modules.outputs.cache-hit == 'true' }}
+      if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
       run: npm install
-      
+
+    - name: Audit dependencies
+      run: npm audit
+
     - name: Fix vulnerabilies
       run: |
         npm audit fix --force
