@@ -127,7 +127,7 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:latest-1
+                  tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:tag-sample-1
                   provenance: false
 
             - name: Save cache
