@@ -118,8 +118,6 @@ jobs:
               with:
                   push: true
                   tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:latest
-                  cache-from: type=local, src=/tmp/.buildx-cache
-                  cache-to: type=local, dest=/tmp/.buildx-cache
                   provenance: false
               
                 
