@@ -36,6 +36,7 @@ jobs:
       run: npm audit
 
     - name: Fix vulnerabilies
+      if: failure()
       run: |
         npm audit fix --force
         npm audit
