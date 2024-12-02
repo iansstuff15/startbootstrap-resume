@@ -28,7 +28,7 @@ jobs:
         key: node_modules
 
     - name: Install dependencies
-      if: ${{ steps.cache-node-modules.cache-hit != 'true' }}
+      if: ${{ steps.cache-node-modules.cache-hit == 'true' }}
       run: npm install
       
     - name: Fix vulnerabilies
