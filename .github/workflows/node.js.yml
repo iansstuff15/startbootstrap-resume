@@ -45,6 +45,7 @@ jobs:
         npm audit
 
     - name: List dependencies
+      if: always()
       run: npm list
 
     - name: Save cache 
