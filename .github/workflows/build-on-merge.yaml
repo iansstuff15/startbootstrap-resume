@@ -1,4 +1,4 @@
-name: Build on merge
+erge
 on: workflow_dispatch
 
 permissions:
@@ -101,6 +101,9 @@ jobs:
                   path: ./node_modules
                   key: node_modules
 
+            - name: Build node project
+              run: npm run build
+
             - name: Configure AWS
               uses: aws-actions/configure-aws-credentials@v3
               with:
@@ -119,5 +122,12 @@ jobs:
                   push: true
                   tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:latest
                   provenance: false
+
+            - name: Save cache
+              if: always()
+              uses: actions/cache/save@v4
+              with:
+                  path: ./dist
+                  key: build_dist
               
                 
