@@ -38,10 +38,24 @@ jobs:
     - name: Audit and Fix vulnerabilies
       run: npm audit fix --force
 
+    - name: Get secrets
+      uses: aws-actions/aws-secretsmanager-get-secrets@v2
+      with:
+        secret-ids: |
+          SONARQUBE_HOST_URL
+          CAIMBRIDGE_DEMO_TOKEN
+
+    - name: SonarScan
+      uses: sonarsource/sonarqube-scan-action@master
+      env:
+          SONAR_TOKEN: ${{ env.SONAR_TOKEN }}
+          SONAR_HOST_URL: ${{ env.SONAR_HOST_URL }}
+
+
     - name: Save cache 
       if: always()
       uses: actions/cache/save@v4
       with:
         path: ./node_modules
         key: node_modules
-
+  
