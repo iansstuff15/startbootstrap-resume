@@ -18,9 +18,6 @@ jobs:
       with:
         node-version: 22.11.0
         cache: 'npm'
-        
-    - name: Audit dependencies
-      run: npm audit
       
     - name: Fix vulnerabilies
       if: failure()
