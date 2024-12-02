@@ -60,6 +60,12 @@ jobs:
         aws-region: us-east-1
         role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
 
+    - name: Install node
+      uses: actions/setup-node@v4
+      with:
+        node-version: 22.11.0
+        cache: 'npm'
+
     - name: Cache Modules
       id: cache-node-modules
       uses: actions/cache/restore@v4
