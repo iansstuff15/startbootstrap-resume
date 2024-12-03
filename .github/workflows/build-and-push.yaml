@@ -84,6 +84,8 @@ jobs:
                   tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:${{ inputs.image-tag }}
                   provenance: true
                   sbom: true
+              env:
+                 DOCKER_BUILD_SUMMARY: true
 
             - name: Save cache
               if: always()
