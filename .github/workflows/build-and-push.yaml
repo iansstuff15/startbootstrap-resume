@@ -82,7 +82,8 @@ jobs:
                   context: .
                   push: true
                   tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:${{ inputs.image-tag }}
-                  provenance: false
+                  provenance: true
+                  sbom: true
 
             - name: Save cache
               if: always()
