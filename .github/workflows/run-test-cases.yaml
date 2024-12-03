@@ -1,0 +1,46 @@
+name: Run test cases
+on:
+  workflow_call:
+    inputs:
+      skip-test-cases:
+        description: 'This will skip npm test step'
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+    run-test-cases:
+        runs-on: actions-runner-1
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Configure AWS
+              uses: aws-actions/configure-aws-credentials@v3
+              with:
+                  aws-region: us-east-1
+                  role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
+
+            - name: Install node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11.0
+                  cache: 'npm'
+
+            - name: Install node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11.0
+                  cache: 'npm'
+
+            - name: Cache Modules
+              id: cache-node-modules
+              uses: actions/cache/restore@v4
+              with:
+                  path: ./node_modules
+                  key: node_modules
+
+            - name: Run Test Cases
+              if:  ${{ !inputs.skip-test-cases }}
+              run: npm run test
