@@ -77,3 +77,21 @@ I also stored the secrets for this project inside secrets manager. This makes su
 ![image](https://github.com/user-attachments/assets/abc75d2d-35b2-4979-9ce2-0477a90f7e76)
 
 In the role permissions, we included another policy that only allows the retrieval of the secrets that the workflow would need.
+
+# Example runs
+- [Build and Push to ECR repository](https://github.com/iansstuff15/startbootstrap-resume/actions/runs/12144723569/job/33864735264)
+- [Pull Request Check](https://github.com/iansstuff15/startbootstrap-resume/actions/runs/12144474097/job/33863898862)
+
+# Exaple SonarQube output
+
+- **SonarQube Dashboard**
+![image](https://github.com/user-attachments/assets/f353bf6b-c530-43fd-89f9-3be78e9e14d2)
+  
+- **Example SonarQube Findings**
+![image](https://github.com/user-attachments/assets/2fcbab4c-513d-4334-b47a-1886f210e01d)
+![image](https://github.com/user-attachments/assets/3d8a4667-3932-4a9a-acdd-1d66c0579339)
+![image](https://github.com/user-attachments/assets/8c42ba73-7242-4de9-899e-3c92aff811e3)
+![image](https://github.com/user-attachments/assets/932bf76c-ab50-4901-ae7d-a982070efd05)
+
+- **Example resolution in SonarQube**
+![image](https://github.com/user-attachments/assets/f641929c-8df5-454c-8736-89ad7f3f88f1)
