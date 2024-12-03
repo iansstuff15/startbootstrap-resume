@@ -95,3 +95,11 @@ In the role permissions, we included another policy that only allows the retriev
 
 - **Example resolution in SonarQube**
 ![image](https://github.com/user-attachments/assets/f641929c-8df5-454c-8736-89ad7f3f88f1)
+
+# Final Output
+
+![image](https://github.com/user-attachments/assets/459ed7fa-79fb-4438-8e3c-bcfa9b272f97)
+
+For the final output to be accessed publicly, I opted to provision an EC2 instacne then installed docker in it. After pulling the image, I then mapped the port for http to the 3000 port of the docker image inorder for users from the internet to access the node.js application running in the docker image.
+
+[link to final output](http://54.234.93.195/)
