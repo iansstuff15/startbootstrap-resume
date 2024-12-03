@@ -91,7 +91,7 @@ jobs:
                   key: node_modules
 
             - name: Run Test Cases
-              if:  ${{ !inputs.skip-dependency-check }}
+              if:  ${{ !inputs.skip-test-cases }}
               run: npm run test
 
     create-docker-image:
@@ -142,7 +142,7 @@ jobs:
               with:
                   context: .
                   push: true
-                  tags: ${{ steps.login-ecr.outputs.registry }}/caimbridge-demo:tag-sample-1
+                  tags: ${{ steps.login-ecr.outputs.registry }}/${{ inputs.image-tag }}
                   provenance: false
 
             - name: Save cache
