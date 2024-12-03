@@ -1,0 +1,45 @@
+name: Audit Dependency
+on:
+  workflow_call:
+    inputs:
+      skip-dependency-check:
+      description: 'This will skip npm audit step'
+      required: false
+      type: boolean
+      default: false
+
+jobs:
+    audit-dependencies:
+        runs-on: actions-runner-1
+        steps:
+            - uses: actions/checkout@v4
+              with:
+                  fetch-depth: 0
+
+            - name: Install node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22.11.0
+                  cache: 'npm'
+
+            - name: Cache Modules
+              id: cache-node-modules
+              uses: actions/cache/restore@v4
+              with:
+                  path: ./node_modules
+                  key: node_modules
+
+            - name: Install dependencies
+              if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
+              run: npm install
+
+            - name: Audit and Fix vulnerabilies
+              if:  ${{ !inputs.skip-dependency-check }}
+              run: npm audit fix --force
+
+            - name: Save cache
+              if: always()
+              uses: actions/cache/save@v4
+              with:
+                  path: ./node_modules
+                  key: node_modules
