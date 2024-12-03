@@ -22,12 +22,16 @@ permissions:
 
 jobs:
     audit-dependencies:
-       if:  ${{ !inputs.skip-dependency-check }}
        uses: iansstuff15/startbootstrap-resume/.github/workflows/audit-dependency.yaml@master
+       with:
+           skip-dependency-check: ${{ inputs.skip-dependency-check }}
 
-    run-test-cases:
-       if:  ${{ !inputs.skip-test-cases }}
+    run-test-cases: 
+       needs: audit-dependencies
        uses: iansstuff15/startbootstrap-resume/.github/workflows/run-test-cases.yaml@master
+       with: 
+           skip-test-cases: ${{ !inputs.skip-test-cases }}
+           
 
     create-docker-image:
         needs: run-test-cases
