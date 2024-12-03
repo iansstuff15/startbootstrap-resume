@@ -1,4 +1,4 @@
-name: Build on oush to ecr
+name: Build and push to ecr
 on: 
     workflow_dispatch:
         inputs:
