@@ -3,10 +3,10 @@ on:
   workflow_call:
     inputs:
       skip-dependency-check:
-      description: 'This will skip npm audit step'
-      required: false
-      type: boolean
-      default: false
+        description: 'This will skip npm audit step'
+        required: false
+        type: boolean
+        default: false
 
 jobs:
     audit-dependencies:
