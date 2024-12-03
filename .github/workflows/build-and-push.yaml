@@ -1,15 +1,28 @@
-name: Build on merge
-on: workflow_dispatch
+name: Build on oush to ecr
+on: 
+    workflow_dispatch:
+        inputs:
+            image-tag:
+                description: 'tag for docker image' 
+                required: true
+            skip-dependency-check:
+                description: 'This will skip npm audit step'
+                required: false
+                type: boolean
+                default: false
+            skip-test-cases:
+                description: 'This will skip npm test step'
+                required: false
+                type: boolean
+                default: false
 
 permissions:
     id-token: write
     contents: read
 
 jobs:
-
     audit-dependencies:
         runs-on: actions-runner-1
-
         steps:
             - uses: actions/checkout@v4
               with:
@@ -33,6 +46,7 @@ jobs:
               run: npm install
 
             - name: Audit and Fix vulnerabilies
+              if:  ${{ !inputs.skip-dependency-check }}
               run: npm audit fix --force
 
             - name: Save cache
@@ -77,6 +91,7 @@ jobs:
                   key: node_modules
 
             - name: Run Test Cases
+              if:  ${{ !inputs.skip-dependency-check }}
               run: npm run test
 
     create-docker-image:
