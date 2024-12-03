@@ -22,20 +22,12 @@ permissions:
 
 jobs:
     audit-dependencies:
-        runs-on: actions-runner-1
-        steps:
-            - name: Audit and Fix vulnerabilies
-              if:  ${{ !inputs.skip-dependency-check }}
-              uses: iansstuff15/startbootstrap-resume/.github/workflows/audit-dependency.yaml@main
+       if:  ${{ !inputs.skip-dependency-check }}
+       uses: iansstuff15/startbootstrap-resume/.github/workflows/audit-dependency.yaml@main
 
     run-test-cases:
-        needs: audit-dependencies
-        runs-on: actions-runner-1
-
-        steps:
-            - name: Run Test Cases
-              if:  ${{ !inputs.skip-test-cases }}
-              uses: iansstuff15/startbootstrap-resume/.github/workflows/run-test-cases.yaml@main
+       if:  ${{ !inputs.skip-test-cases }}
+       uses: iansstuff15/startbootstrap-resume/.github/workflows/run-test-cases.yaml@main
 
     create-docker-image:
         needs: run-test-cases
