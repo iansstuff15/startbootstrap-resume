@@ -1,6 +1,6 @@
 # Github Actions CI/CD Documentation
 
-##Overview
+## Overview
 
 ![image](https://github.com/user-attachments/assets/f7e0d036-8eb6-403a-b275-405a8f674cda)
 
@@ -23,10 +23,15 @@ With all those considered, we can conclude that we need the following github wor
 - [On Pull Request]()
 - [Build and Push]()
 
-  
+## Docker image
 
+As mentioned previously we will be using docker in this project, to build the project we created a [docker file]() that describes the image that will be created. The following are the rationale of each notable component inside the [docker file]().
 
+![image](https://github.com/user-attachments/assets/cf761607-f759-416a-9e8f-7fd62df026a0)
+- for the base image we choose to use node based on the [alphine linux](https://alpinelinux.org/) operating system. This operating system is lightweight as it is stripped down of other binaries that is unnecessary for this application's usecase unlike other full-blown operating system. It is also more secured, for example `sudo` is not included in alphine linux thus making it impossible for bad actors to execute commands that requires the sudo priviledges.
 
+![image](https://github.com/user-attachments/assets/bc698b32-4c41-4f61-822c-dc383d5423c4)
+- creation of a new user is also added to the docker file so that we can later use it as the default user inside the docker image, this will prevent bad actors to perform actions that only the root user can. together with the previous benefits of using [alphine linux](https://alpinelinux.org/) we are able to achieve a more robust security scheme.
 
-
-
+![image](https://github.com/user-attachments/assets/0c117b83-86f1-4f37-be3f-cce9de175fe6)
+- Permission and access management is also another important part of the docker image wherein we make sure that during build time the files that we copy into docker is only accessible with the docker user and permissions for both group and everyone else should be disabled (this are the 2nd and 3rd digit in the chmod command). Permissions should also make sense on what the role of the file or directory is. For example, a file that does not neet to be executed should not need the execute permission (a outlier would be directories as it is needed to open a directory). Write permissions are also not included in this dockerfile as we dont want our code be rewritten unwillingly. However during testing it was found that write permission is needed in the `dist` directory and not having it their causes `node watch` (a script that listens to code changes) to fail. I recommend this part of the `node start` script to be revisted so that we can revoke this permission moving forward.
