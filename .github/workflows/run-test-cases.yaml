@@ -16,12 +16,6 @@ jobs:
               with:
                   fetch-depth: 0
 
-            - name: Configure AWS
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                  aws-region: us-east-1
-                  role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
-
             - name: Install node
               uses: actions/setup-node@v4
               with:
