@@ -9,79 +9,13 @@ permissions:
     contents: read
 
 jobs:
-
     audit-dependencies:
-        runs-on: actions-runner-1
+       uses: iansstuff15/startbootstrap-resume/.github/workflows/audit-dependency.yaml@master
 
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - name: Install node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22.11.0
-                  cache: 'npm'
-
-            - name: Cache Modules
-              id: cache-node-modules
-              uses: actions/cache/restore@v4
-              with:
-                  path: ./node_modules
-                  key: node_modules
-
-            - name: Install dependencies
-              if: ${{ steps.cache-node-modules.outputs.cache-hit != 'true' }}
-              run: npm install
-
-            - name: Audit and Fix vulnerabilies
-              run: npm audit fix --force
-
-            - name: Save cache
-              if: always()
-              uses: actions/cache/save@v4
-              with:
-                  path: ./node_modules
-                  key: node_modules
-
-    run-test-cases:
-        needs: audit-dependencies
-        runs-on: actions-runner-1
-
-        steps:
-            - uses: actions/checkout@v4
-              with:
-                  fetch-depth: 0
-
-            - name: Configure AWS
-              uses: aws-actions/configure-aws-credentials@v3
-              with:
-                  aws-region: us-east-1
-                  role-to-assume: ${{secrets.GITHUBACTIONSOIDC}}
-
-            - name: Install node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22.11.0
-                  cache: 'npm'
-
-            - name: Install node
-              uses: actions/setup-node@v4
-              with:
-                  node-version: 22.11.0
-                  cache: 'npm'
-
-            - name: Cache Modules
-              id: cache-node-modules
-              uses: actions/cache/restore@v4
-              with:
-                  path: ./node_modules
-                  key: node_modules
-
-            - name: Run Test Cases
-              run: npm run test
-
+    run-test-cases: 
+       needs: audit-dependencies
+       uses: iansstuff15/startbootstrap-resume/.github/workflows/run-test-cases.yaml@master
+           
     sonarscan:
         needs: run-test-cases
         runs-on: actions-runner-1
