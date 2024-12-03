@@ -42,3 +42,38 @@ As mentioned previously I will be using docker in this project, to build the pro
 ![image](https://github.com/user-attachments/assets/88398623-6f33-457d-8d73-907be5857d74)
 
 The base of this project that was forked did not include any test cases inside the code. To demonstrate the test step in the demo pipeline, I opted to use [jest](https://jestjs.io/) a javascript library used for testing I also created a [simple testcase](test/sum.test.js) and updated the [package.json](package.json) to map `jest` in the `npm run test` command.
+
+# Servers
+
+To run this pipelines the following servers was provisioned and are necessary:
+
+![image](https://github.com/user-attachments/assets/2c46cb74-57c4-47bb-b245-90581d5beefa)
+![image](https://github.com/user-attachments/assets/c20b42da-1435-4f0e-a42a-e93fdf8c6f69)
+
+- github actions self-hosted runner: by default github actions uses runners that are [managed by github](https://docs.github.com/en/actions/using-github-hosted-runners/using-github-hosted-runners/about-github-hosted-runners). As an organization, we value the confidentiality of our code and we have to make sure that the code runs and copied on places that we can monitor. Thus, making a [self-hosted runner](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners) is necessary. Following the [least priviledge principle](https://www.cyberark.com/what-is/least-privilege/#:~:text=The%20principle%20of%20least%20privilege,perform%20his%2Fher%20job%20functions.) we only provided the necessary ingress to our ec2 instance in this scenario ssh access from my home ip address.
+
+![image](https://github.com/user-attachments/assets/86c93b90-e9dd-424c-a0f0-de1d2cb400c2)
+![image](https://github.com/user-attachments/assets/7aa0c525-934d-4ca6-abea-2fd69863d5a4)
+
+- sonarqube host: in order for sonarqube to be accessed by our CI/CD pipeline, and perform staic code analysis it is necessaru for it to be installed in a host (in our case EC2). In terms of security, we allowed ingress to our ec2 instance only to my home wifi for both http, https, and ssh connection this will make sure that only I can ssh into the instance and access its dashboard, the github actions runner is also allowed to http into the sonarqube instance as it is needed by it inorder to perform the static code analysis.
+
+# Role Permissions
+
+In order for github action to be authenticated by AWS we provided a role for it that includes only the following permissions:
+
+![image](https://github.com/user-attachments/assets/dfe723b8-ea3d-4af0-a655-7d7e6feebef1)
+![image](https://github.com/user-attachments/assets/4eb49228-befc-4794-8fea-616513aa1271)
+
+- **ecr:BatchCheckLayerAvailability** allows user to checks if the image already exist in the repository
+- **ecr:BatchGetImage** allows user to retrieve image if it exist
+- **ecr:InitiateLayerUpload** allows user to initiate the upload of layers
+- **ecr:UploadLayerPart** ECR uploads images by layers, this permission allows its upload
+- **ecr:CompleteLayerUpload**  allows user to complete and recompile the layers back
+- **ecr:PutImage** allows the user to push images into ECR
+- **ecr:GetAuthorizationToken** allows the github actions runner to login to ECR and authenticate itself inside the private repository
+
+I also stored the secrets for this project inside secrets manager. This makes sure that valuable data such as keys, tokens, and even host addresses are not exposed inside the workflow file.
+
+![image](https://github.com/user-attachments/assets/abc75d2d-35b2-4979-9ce2-0477a90f7e76)
+
+In the role permissions, we included another policy that only allows the retrieval of the secrets that the workflow would need.
